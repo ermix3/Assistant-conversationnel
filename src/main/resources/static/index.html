@@ -9,28 +9,58 @@
     <script src="/widget.js" defer></script>
 </head>
 <body>
-<main>
-    <header><span class="eyebrow">ESCAPE HEALTH CLUB</span>
-        <h1>Un moment pour vous.</h1>
-        <p>Votre assistant pour découvrir le club et ses services.</p><label>Langue / Language / اللغة <select
-                id="language">
-            <option value="fr">Français</option>
-            <option value="en">English</option>
-            <option value="ar">العربية / الدارجة</option>
-        </select></label></header>
-    <section aria-labelledby="chat-title"><h2 id="chat-title">Parlons de votre prochaine visite</h2>
-        <p id="privacy">Évitez les données personnelles et médicales dans le chat. Historique temporaire de 30
-            minutes.</p>
+<main aria-label="Escape Health Club">
+    <section class="welcome" aria-labelledby="welcome-title">
+        <div class="welcome-content">
+            <span class="welcome-mark" aria-hidden="true">✧</span>
+            <p class="welcome-eyebrow">LE MOUVEMENT. LE CALME. VOUS.</p>
+            <h1 id="welcome-title" class="welcome-title">Escape<span>Health Club</span></h1>
+            <div class="welcome-rule" aria-hidden="true"></div>
+            <p class="welcome-tagline">Un moment pour vous.<br><em>Un nouvel élan au quotidien.</em></p>
+            <p class="welcome-description">Découvrez le club, ses espaces et ses services.<br>Votre assistant vous accompagne, tout simplement.</p>
+            <button id="welcome-chat" class="welcome-link" type="button" aria-controls="chat-panel">
+                Parlons de votre prochaine visite
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+        </div>
+    </section>
+    <section id="chat-panel" class="chat-panel" aria-labelledby="chat-title" hidden>
+        <header class="chat-header">
+            <svg class="bot-avatar" viewBox="0 0 64 64" aria-hidden="true">
+                <path fill="currentColor" d="M8 25Q32-5 56 25L50 37Q32 49 14 37ZM16 43Q32 52 48 43Q45 56 31 60L34 52Q22 53 16 43Z"/>
+                <rect x="20" y="21" width="24" height="12" rx="6" fill="#511a91"/>
+                <g fill="#36ead2"><circle cx="26" cy="27" r="2.5"/><circle cx="38" cy="27" r="2.5"/></g>
+            </svg>
+            <div class="chat-heading"><span class="eyebrow">ESCAPE HEALTH CLUB</span>
+                <h2 id="chat-title">Parlons de votre prochaine visite</h2>
+            </div>
+            <button id="chat-close" class="icon-button" type="button" aria-label="Fermer le chat">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+            </button>
+        </header>
+        <div class="chat-toolbar"><label for="language">Langue / Language / اللغة</label>
+            <select id="language">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="ar">العربية / الدارجة</option>
+            </select>
+        </div>
+        <p id="privacy">Évitez les données personnelles et médicales dans le chat. Historique temporaire de 30 minutes.</p>
         <div id="messages" role="log" aria-live="polite" aria-relevant="additions"></div>
-        <form id="chat-form"><label id="message-label" for="message">Votre question</label>
-            <div class="composer"><textarea id="message" maxlength="2000" rows="2" required></textarea>
-                <button id="send">Envoyer</button>
+        <form id="chat-form"><label id="message-label" class="sr-only" for="message">Votre question</label>
+            <div class="composer"><textarea id="message" maxlength="2000" rows="2" placeholder="Votre question" required></textarea>
+                <button id="send" type="submit">Envoyer</button>
             </div>
         </form>
+        <footer id="footer">Descriptions générales uniquement. Pour une question de santé, contactez le personnel qualifié.</footer>
     </section>
-    <footer id="footer">Descriptions générales uniquement. Pour une question de santé, contactez le personnel
-        qualifié.
-    </footer>
+    <button id="chat-launcher" class="chat-launcher" type="button" aria-label="Ouvrir le chat" aria-controls="chat-panel" aria-expanded="false">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path fill="currentColor" d="M8 25Q32-5 56 25L50 37Q32 49 14 37ZM16 43Q32 52 48 43Q45 56 31 60L34 52Q22 53 16 43Z"/>
+            <rect x="20" y="21" width="24" height="12" rx="6" fill="#511a91"/>
+            <g fill="#36ead2"><circle cx="26" cy="27" r="2.5"/><circle cx="38" cy="27" r="2.5"/></g>
+        </svg>
+    </button>
 </main>
 </body>
 </html>

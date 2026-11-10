@@ -46,6 +46,8 @@ Knowledge Markdown is manually curated from the official site, with provenance i
 ```bash
 ./mvnw test
 ./mvnw verify
+# Widget interaction tests (Node.js 18+):
+node --test src/test/js/widget.test.cjs
 # Optional behavioral evaluation against installed local models; never a hosted LLM:
 ./mvnw -Descape.eval=true -Dtest=LocalModelEvaluationTests test
 ```
@@ -53,6 +55,8 @@ Knowledge Markdown is manually curated from the official site, with provenance i
 Default tests use JUnit/Mockito and a real `pgvector/pgvector:pg16` Testcontainer, with mocked embedding responses and no LLM requests. They cover validation, domain database tools, API limits, origin restrictions, cookie isolation, ingestion replacement and rollback. Docker is required; database integration tests are not silently skipped. The opt-in evaluation consumes `src/test/resources/eval/questions.csv` and checks tool calls, language/behavior markers, refusal, medical handoff, unknown facts, hours and prompt injection without asserting exact model wording. Changes to model, prompt or knowledge should pass this evaluation before release.
 
 ## Website deployment and privacy
+
+A centered Escape Health Club welcome introduces the club and provides a direct invitation to open the assistant. The home page is a full-height off-white canvas with a subtle violet contour pattern matching the chatbot button and a floating chatbot button in the bottom-right corner. Click it to open or minimize the conversation; the header button and Escape key also close it. Drafts and the current conversation remain available when reopening the widget. The panel adapts to mobile screens and supports French, English and Arabic.
 
 Serve the application through the club's HTTPS origin (reverse proxy `/api`, `/widget.js`, `/widget.css`, or embed the page in a same-origin iframe). Same-origin cookies are required for memory. Same-origin browser requests are accepted, including local pages at `http://localhost:8080` and `http://127.0.0.1:8080`. Cross-origin requests are restricted to the club's www and apex HTTPS origins by default; customize `CLUB_ALLOWED_ORIGINS` only when needed. Set `COOKIE_SECURE=true` in production. The in-process per-IP limiter permits 20 API writes per minute and caps JSON bodies at 16 KiB, including chunked bodies. It uses the socket IP and deliberately ignores client-controlled forwarding headers. Configure an additional trusted reverse-proxy limiter for multiple replicas and proxied client IPs.
 
