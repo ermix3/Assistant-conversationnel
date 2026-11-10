@@ -4,7 +4,7 @@ Guidance for AI coding agents working on this repository. Read this fully before
 
 ## Project overview
 
-An AI customer-support chatbot for **Escape Health Club** (https://www.escapehealthclub.com), a health and wellness club offering physiotherapy, fitness and performance, cryotherapy, spa and well-being, memberships and an "Escape Pass". The bot answers visitors' questions on the website, looks up official prices, and captures callback requests for the staff.
+An AI customer-support chatbot for **Escape Health Club** (https://www.escapehealthclub.com), a health and wellness club offering physiotherapy, fitness and performance, cryotherapy, spa and well-being, memberships and an "Escape Pass". The bot answers visitors' questions on the website and looks up official prices.
 
 - **Scope:** questions about the club only. Anything else gets a polite refusal.
 - **Languages:** French, English and Arabic/Darija. Always reply in the language the customer writes in.
@@ -18,7 +18,6 @@ An AI customer-support chatbot for **Escape Health Club** (https://www.escapehea
 - Ollama for local development (chat model `qwen3.5:latest`, embeddings `bge-m3`, 1024 dimensions)
 - PostgreSQL with the pgvector extension (vector store + relational data)
 - Spring Data JPA + Flyway for the schema
-- Spring Mail for staff notifications
 
 ## Commands
 
@@ -50,7 +49,7 @@ curl -X POST localhost:8080/api/chat \
 Website widget -> POST /api/chat -> ChatService (Spring AI ChatClient)
                                         |-- QuestionAnswerAdvisor  -> pgvector (descriptive content)
                                         |-- MessageChatMemoryAdvisor -> conversation history
-                                        '-- Tools (ClubTools)      -> prices table, callback requests
+                                        '-- Tools (ClubTools)      -> prices table and official club facts
 ```
 
 Suggested layout (base package `com.escape.chatbot`):
@@ -60,7 +59,6 @@ chat/        ChatController, ChatRequest, ChatService
 agent/       ClubTools (@Tool methods), system prompt
 knowledge/   IngestionService, knowledge loader
 pricing/     Price entity + repository
-leads/       CallbackRequest entity + repository + notifier
 config/      ChatClient, CORS, rate limiting
 src/main/resources/
   knowledge/ Markdown files, one per service (physio, fitness, cryo, spa, pass, faq)
@@ -72,9 +70,9 @@ src/main/resources/
 
 1. **Prices, opening hours and contact details never come from the model's memory or from vector search.** They come from the database through a tool (`getPrice`, etc.). If a price is not in the database, the bot says it does not have it and offers the staff contact.
 2. **No medical advice.** Physiotherapy and cryotherapy have contraindications (pregnancy, heart conditions, and so on). The bot gives general descriptions only and sends health-specific questions to the staff.
-3. **No invented facts.** If the retrieved context does not contain the answer, the bot says so and offers a callback, the phone number or the email.
+3. **No invented facts.** If the retrieved context does not contain the answer, the bot says so and offers the phone number or the email.
 4. **Stay on topic.** Refuse unrelated requests (coding help, politics, other businesses) briefly and politely.
-5. **No booking promises.** There is no booking system. The bot can only record a callback request; it must never claim that an appointment is confirmed.
+5. **No booking promises.** There is no booking system; the bot must never claim that an appointment is confirmed.
 6. **Reply in the customer's language**, and keep answers short and friendly.
 
 ## Code conventions
@@ -83,7 +81,6 @@ src/main/resources/
 - Use Java records for request/response DTOs. Validate input with Bean Validation (`@NotBlank`, `@Size`).
 - Keep the system prompt in `src/main/resources/prompts/`, not hard-coded in Java.
 - Each `@Tool` method needs a precise `description` (the model uses it to decide when to call it) and returns plain, short strings or small records.
-- Tools that write data (e.g. callback requests) must validate arguments and never trust model-supplied values blindly (phone format, length limits).
 - Schema changes go through Flyway migrations. Never edit an applied migration; add a new one.
 - Configuration lives in `application.yml`; secrets come from environment variables, never from committed files.
 - Prefer small, focused classes. Add Javadoc only where behaviour is non-obvious.
@@ -104,7 +101,6 @@ src/main/resources/
 
 ## Security and privacy
 
-- Callback requests contain names and phone numbers. Store them only in the database, never log them in full, and add a consent line in the widget.
 - Rate-limit `/api/chat` per IP and cap message length.
 - Treat user input as untrusted: the system prompt must resist instructions to ignore its rules, and tools must never expose internal data.
 - Restrict CORS to the club's website origin.

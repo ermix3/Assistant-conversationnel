@@ -1,10 +1,7 @@
 package ai.factory.agent_fitness;
 import ai.factory.agent_fitness.agent.ClubTools;
-import ai.factory.agent_fitness.leads.CallbackInput;
 import ai.factory.agent_fitness.knowledge.IngestionService;
-import ai.factory.agent_fitness.leads.CallbackRepository;
 import ai.factory.agent_fitness.pricing.PriceRepository;
-import ai.factory.agent_fitness.leads.CallbackService;
 import org.junit.jupiter.api.*;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.document.Document;
@@ -22,10 +19,6 @@ import static org.mockito.Mockito.*;
 class AgentFitnessApplicationTests {
     @Autowired ClubTools tools;
     @Autowired PriceRepository prices;
-    @Autowired
-    CallbackService callbacks;
-    @Autowired
-    CallbackRepository callbackRepository;
     @Autowired IngestionService ingestion;
     @Autowired JdbcTemplate jdbc;
     @MockitoBean EmbeddingModel embeddings;
@@ -41,14 +34,6 @@ class AgentFitnessApplicationTests {
         assertThat(tools.getPrice("missing")).isEqualTo("PRICE_UNAVAILABLE");
         assertThat(tools.getOpeningHours()).isEmpty();
         assertThat(tools.getContact()).hasSize(2);
-    }
-    @Test void callbackRequiresConsentAndPersists() {
-        long before=callbackRepository.count();
-        assertThatThrownBy(()->callbacks.record(new CallbackInput("Test","0600000000","fr",false))).isInstanceOf(IllegalArgumentException.class);
-        assertThat(callbackRepository.count()).isEqualTo(before);
-        var id=callbacks.record(new CallbackInput("Test","0600000000","fr",true));
-        assertThat(callbackRepository.findById(id)).isPresent();
-        callbackRepository.deleteById(id);
     }
     @Test void ingestionReplacesCorpusAndRollsBackOnEmbeddingFailure() throws Exception {
         int count=ingestion.ingest();

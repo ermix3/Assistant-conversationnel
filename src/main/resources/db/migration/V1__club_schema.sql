@@ -16,17 +16,6 @@ CREATE TABLE club_facts
 INSERT INTO club_facts
 VALUES ('phone', 'contact', '05 22 52 78 31'),
        ('email', 'contact', 'contact@escapehealthclub.com');
-CREATE TABLE callback_requests
-(
-    id          uuid PRIMARY KEY,
-    name        varchar(100) NOT NULL,
-    phone       varchar(20)  NOT NULL CHECK (phone ~ '^(0[5-7][0-9]{8}|[+]212[5-7][0-9]{8})$'),
-    language    varchar(2)   NOT NULL CHECK (language IN ('fr', 'en', 'ar')),
-    consent_at  timestamptz  NOT NULL,
-    created_at  timestamptz  NOT NULL,
-    notified_at timestamptz
-);
-CREATE INDEX callback_pending ON callback_requests (created_at) WHERE notified_at IS NULL;
 CREATE TABLE vector_store
 (
     id        uuid PRIMARY KEY,

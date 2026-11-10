@@ -48,7 +48,3 @@ club:
   allowed-origins: ${CLUB_ALLOWED_ORIGINS:https://www.escapehealthclub.com,https://escapehealthclub.com}
   knowledge:
     ingest: ${KNOWLEDGE_INGEST:false}
-  notifications:
-    enabled: ${MAIL_NOTIFICATIONS_ENABLED:false}
-    to: ${STAFF_NOTIFICATION_TO:}
-    from: ${STAFF_NOTIFICATION_FROM:}
