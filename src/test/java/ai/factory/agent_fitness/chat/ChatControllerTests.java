@@ -33,6 +33,33 @@ class ChatControllerTests {
         mvc.perform(post("/api/chat").contentType("application/json").content("{}")).andExpect(status().isTooManyRequests());
         verifyNoInteractions(chat,callbacks);
     }
+    @Test void acceptsSameOriginBrowserPostsOnBothLocalHostnames() throws Exception {
+        when(chat.reply(anyString(),eq("Bonjour"))).thenReturn("Bonjour");
+        for (String host : java.util.List.of("127.0.0.1", "localhost")) {
+            mvc.perform(post("http://" + host + ":8080/api/chat")
+                    .header("Origin", "http://" + host + ":8080")
+                    .contentType("application/json").content("{\"message\":\"Bonjour\"}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.message").value("Bonjour"));
+        }
+        verify(chat,times(2)).reply(anyString(),eq("Bonjour"));
+    }
+    @Test void stillRejectsDifferentPortsSchemesHostsAndMalformedOrigins() throws Exception {
+        for (String origin : java.util.List.of("http://127.0.0.1:8081", "https://127.0.0.1:8080",
+                "http://localhost:8080", "https://evil.example", "null", "http://[invalid")) {
+            mvc.perform(post("http://127.0.0.1:8080/api/chat").header("Origin", origin)
+                    .contentType("application/json").content("{\"message\":\"Bonjour\"}"))
+                .andExpect(status().isForbidden());
+        }
+        verifyNoInteractions(chat,callbacks);
+    }
+    @Test void acceptsConfiguredClubOrigin() throws Exception {
+        when(chat.reply(anyString(),eq("Bonjour"))).thenReturn("Bonjour");
+        mvc.perform(post("http://127.0.0.1:8080/api/chat")
+                .header("Origin", "https://www.escapehealthclub.com")
+                .contentType("application/json").content("{\"message\":\"Bonjour\"}"))
+            .andExpect(status().isOk())
+            .andExpect(header().string("Access-Control-Allow-Origin", "https://www.escapehealthclub.com"));
+    }
     @Test void doesNotExposeExceptionOrSubmittedData() throws Exception {
         when(chat.reply(anyString(),anyString())).thenThrow(new IllegalStateException("private diagnostic"));
         mvc.perform(post("/api/chat").contentType("application/json").content("{\"message\":\"Bonjour\"}"))

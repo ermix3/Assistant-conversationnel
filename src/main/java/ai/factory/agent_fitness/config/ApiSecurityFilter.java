@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -27,6 +28,15 @@ public class ApiSecurityFilter extends OncePerRequestFilter {
 
     public ApiSecurityFilter(@Value("${club.allowed-origins}") String origins) {
         this.origins = Set.of(origins.split(","));
+    }
+
+    private boolean allowsOrigin(HttpServletRequest request, String origin) {
+        try {
+            // Browser POSTs include Origin even when the page and API share an origin.
+            return origins.contains(origin) || !CorsUtils.isCorsRequest(request);
+        } catch (IllegalArgumentException invalidOrigin) {
+            return false;
+        }
     }
 
     @Override
@@ -49,7 +59,7 @@ public class ApiSecurityFilter extends OncePerRequestFilter {
         response.setHeader("X-Content-Type-Options", "nosniff");
         String origin = request.getHeader("Origin");
         if (origin != null) {
-            if (!origins.contains(origin)) {
+            if (!allowsOrigin(request, origin)) {
                 response.sendError(403);
                 return;
             }
