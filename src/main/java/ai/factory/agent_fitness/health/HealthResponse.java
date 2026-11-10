@@ -1,4 +1,4 @@
-package ai.factory.agent_fitness.dto.response;
+package ai.factory.agent_fitness.health;
 
 public record HealthResponse(String status) {
 }

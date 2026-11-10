@@ -1,0 +1,25 @@
+-- Source: https://www.escapehealthclub.com/wp-json/wp/v2/pages/18
+-- Reviewed 2026-11-10. No opening hours were verified.
+INSERT INTO prices(service_code, label, amount, unit)
+VALUES ('performance_lab', 'Performance Lab — séance unique', 500, 'séance'),
+       ('small_group_pass', 'Small group personal training — Escape Pass', 250, 'séance'),
+       ('personal_training_pass', 'Personal training 1 to 1 — Escape Pass', 350, 'séance'),
+       ('vald', 'Évaluation complète VALD et InBody', 1500, 'évaluation'),
+       ('membership_monthly', 'Abonnement mensuel', 2000, 'mois'),
+       ('membership_annual', 'Abonnement annuel', 20000, 'an'),
+       ('physio', 'Kinésithérapie — séance unique', 400, 'séance'),
+       ('physio_pass', 'Kinésithérapie — Escape Pass', 350, 'séance'),
+       ('hijama_one', 'Hijama — une zone', 350, 'séance'),
+       ('hijama_multiple', 'Hijama — zones multiples', 500, 'séance'),
+       ('sports_massage', 'Massage sportif', 600, 'séance'),
+       ('sports_massage_pass', 'Massage sportif — Escape Pass', 500, 'séance'),
+       ('hammam', 'Hammam traditionnel', 150, 'séance'),
+       ('hammam_targa', 'Hammam Targa — Citrus Bloom', 500, '75 minutes'),
+       ('hammam_kasbah', 'Hammam Kasbah — Vanille Café', 500, '75 minutes'),
+       ('hammam_roses', 'Hammam Kalaat Mgouna — Secret Garden', 500, '75 minutes'),
+       ('signature_massage', 'Massage signature', 500, '45 minutes'),
+       ('cryo', 'Cryothérapie corps entier', 350, 'séance'),
+       ('cryo_pass', 'Cryothérapie corps entier — Escape Pass', 200, 'séance'),
+       ('balneo', 'Balnéothérapie', 350, 'séance'),
+       ('balneo_pass', 'Balnéothérapie — Escape Pass', 200, 'séance'),
+       ('escape_pass', 'Escape Signature Pass — crédit prépayé à partir de', 5000, 'crédit minimum');

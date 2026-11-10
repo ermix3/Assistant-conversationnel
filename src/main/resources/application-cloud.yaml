@@ -1,7 +1,6 @@
+# Explicit opt-in only. Chat text may contain personal data: review 09-08 obligations before use.
 spring:
-  application:
-    name: agent-fitness
   ai:
     ollama:
       chat:
-        model: kimi-k3:cloud
+        model: ${OLLAMA_CLOUD_MODEL}

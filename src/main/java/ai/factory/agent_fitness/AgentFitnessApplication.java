@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AgentFitnessApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AgentFitnessApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AgentFitnessApplication.class, args);
+    }
 
 }

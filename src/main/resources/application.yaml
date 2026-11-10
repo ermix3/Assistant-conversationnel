@@ -1,15 +1,54 @@
 spring:
   application:
     name: agent-fitness
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/escape}
+    username: ${POSTGRES_USER:escape}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
   ai:
     ollama:
-      base-url: http://localhost:11434
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
       chat:
         model: qwen3.5:latest
         temperature: 0.2
+        think: FALSE
+        num-ctx: 8192
+        num-predict: 500
       embedding:
         model: bge-m3
     vectorstore:
       pgvector:
-        initialize-schema: true
+        initialize-schema: false
         dimensions: 1024
+    chat:
+      client:
+        observations:
+          log-prompt: false
+          log-completion: false
+  web:
+    error:
+      include-message: never
+      include-binding-errors: never
+      include-stacktrace: never
+server:
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${COOKIE_SECURE:false}
+club:
+  allowed-origins: ${CLUB_ALLOWED_ORIGINS:https://www.escapehealthclub.com,https://escapehealthclub.com}
+  knowledge:
+    ingest: ${KNOWLEDGE_INGEST:false}
+  notifications:
+    enabled: ${MAIL_NOTIFICATIONS_ENABLED:false}
+    to: ${STAFF_NOTIFICATION_TO:}
+    from: ${STAFF_NOTIFICATION_FROM:}
