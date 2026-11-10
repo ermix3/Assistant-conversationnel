@@ -1,0 +1,15 @@
+services:
+#  ollama:
+#    image: 'ollama/ollama:latest'
+#    ports:
+#      - '11434:11434'
+  pgvector:
+    image: 'pgvector/pgvector:pg18-trixie'
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Docker Compose}'
+      - 'POSTGRES_USER=myuser'
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432:5432'

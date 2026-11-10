@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: agent-fitness
+  ai:
+    ollama:
+      chat:
+        model: kimi-k3:cloud

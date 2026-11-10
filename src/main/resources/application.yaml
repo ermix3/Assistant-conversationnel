@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: agent-fitness
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: qwen3.5:latest
+        temperature: 0.2
+      embedding:
+        model: bge-m3
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1024
