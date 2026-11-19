@@ -1,4 +1,30 @@
-# Escape Health Club assistant
+<h1 align="center">Escape Health Club assistant</h1>
+
+<p align="center"><b>Le mouvement. Le calme. Vous.</b></p>
+
+<p align="center">A multilingual chat assistant for Escape Health Club, answering in French, English and Arabic/Darija.</p>
+
+<p align="center">
+  <a href="#run-locally">Run locally</a> ·
+  <a href="#api">API</a> ·
+  <a href="#verification">Verification</a> ·
+  <a href="AGENTS.md">Contributing</a>
+</p>
+
+<p align="center">
+  <img alt="Java 21" src="https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white">
+  <img alt="Spring Boot 4.1" src="https://img.shields.io/badge/Spring_Boot-4.1-6db33f?logo=springboot&logoColor=white">
+  <img alt="Spring AI 2.0" src="https://img.shields.io/badge/Spring_AI-2.0-6db33f?logo=spring&logoColor=white">
+  <img alt="Ollama" src="https://img.shields.io/badge/LLM-Ollama-black?logo=ollama&logoColor=white">
+  <img alt="PostgreSQL + pgvector" src="https://img.shields.io/badge/PostgreSQL-pgvector-336791?logo=postgresql&logoColor=white">
+  <img alt="Languages" src="https://img.shields.io/badge/languages-FR%20%C2%B7%20EN%20%C2%B7%20AR-5b2a9b">
+</p>
+
+<p align="center">
+  <img alt="Escape Health Club chat widget" src="docs/widget.png" width="720">
+</p>
+
+---
 
 Java 21 / Spring Boot 4.1 / Spring AI 2.0, Ollama and PostgreSQL + pgvector. The assistant answers club questions in French, English and Arabic/Darija, uses database tools for prices/contact/hours, and retrieves descriptive Markdown with RAG.
 
